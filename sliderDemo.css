@@ -4,7 +4,7 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
-  /*overflow: hidden;*/
+  overflow: hidden;
   background-image: radial-gradient(gray, black);
 }
 
@@ -14,14 +14,36 @@ body {
   max-height: 90vh;
   max-width: 90vw;
   width: 40vw;
-  transition: all 500ms;
   border: 1vw solid rgb(255, 255, 255, 0);
+  transition: all 500ms;
+}
+
+#caption {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: -15vh;
+  z-index: 2;
+  padding: 1rem;
+  font-size: 1.5rem;
+  background-color: white;
+  border: .2rem solid black;
+  border-radius: .5rem;
+  transition: all 500ms;
+  cursor: default;
+}
+
+#caption > span {
+  margin-top: .5rem;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .arrows {
   height: 10vw !important;
   width: 8.66vw !important;
   z-index: 1;
+  transition: all 500ms;
 }
 
 #leftArrow {
@@ -49,5 +71,5 @@ body {
   position: absolute;
   width: 40vw;
   filter: opacity(0);
-  transition: all 500ms;
+  transition: transform 500ms, filter 500ms, position 500ms;
 }

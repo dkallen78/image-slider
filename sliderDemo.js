@@ -9,55 +9,16 @@ images = ["images/buenosAires.png",
           "images/valparaiso.png",
           "images/washingtonDC.png"];
 
-class ArrayIndex {
-  //----------------------------------------------------//
-  //An easier way of keeping track of array indices     //
-  //that need to be circular                            //
-  //----------------------------------------------------//
-
-  constructor(index, length) {
-    this.index = index;
-    this._length = length;
-  }
-
-  get length() {
-    return this._length;
-  }
-
-  add(num) {
-    this.now = (this.now + num) % this.length ;
-    return this.now;
-  }
-
-  get next() {
-    return (this.now + 1) % this.length;
-  }
-
-  get now() {
-    return this.index;
-  }
-
-  set now(index) {
-    this.index = index;
-  }
-
-  get last() {
-    if (this.now === 0) {
-      return this.length - 1;
-    } else {
-      return this.now - 1;
-    }
-  }
-
-  sub(num) {
-    if (this.now - num < 0) {
-      this.now = this.length + ((this.now - num) % this.length);
-    } else {
-      this.now -= num;
-    }
-    return this.now;
-  }
-}
+captions = ["Buenos Aires, Argentina",
+            "Chichén Itzá, Mexico",
+            "Machu Pichu, Perú",
+            "Ciudad de México, México",
+            "New York, New York",
+            "Philadelphia, Pennsylvania",
+            "Santiago, Chile",
+            "Los Arcos Saucillo, México",
+            "Valparaíso, Chile",
+            "Washington, D.C."];
 
 function makeImg(src) {
   //----------------------------------------------------//
@@ -147,74 +108,114 @@ function displayImages(index) {
   //
   //Hidden image, 3 left
   let l3 = document.getElementById("image" + (((index + images.length) - 3) % images.length));
-  l3.style.transform = `translate3d(-${thirdTier})`;
-  l3.style.zIndex = "-3";
-  l3.style.filter = "opacity(0)";
+    l3.style.transform = `translate3d(-${thirdTier})`;
+    l3.style.zIndex = "-3";
+    l3.style.filter = "opacity(0)";
 
   //
   //image, 2 left
   let l2 = document.getElementById("image" + (((index + images.length) - 2) % images.length));
-  l2.style.transform = `translate3d(-${secondTier})`;
-  l2.style.zIndex = "-2";
-  l2.style.filter = "opacity(.25)";
+    l2.style.transform = `translate3d(-${secondTier})`;
+    l2.style.zIndex = "-2";
+    l2.style.filter = "opacity(.25)";
 
   //
   //image, 1 left
   let l1 = document.getElementById("image" + (((index + images.length) - 1) % images.length));
-  l1.onclick = "";
-  l1.style.transform = `translate3d(-${firstTier})`;
-  l1.style.zIndex = "-1";
-  l1.style.filter = "opacity(.5)";
+    l1.onclick = "";
+    l1.style.transform = `translate3d(-${firstTier})`;
+    l1.style.zIndex = "-1";
+    l1.style.filter = "opacity(.5)";
 
   //
   //primary image
   let primary = document.getElementById("image" + index);
-  primary.onclick = function() {
-    enlarge(index);
-  }
-  primary.style.transform = "translate3d(0, 0, 0px)";
-  primary.style.zIndex = "1";
-  primary.style.filter = "opacity(1)";
+    primary.onclick = function() {
+      enlarge(index);
+    }
+    primary.style.transform = "translate3d(0, 0, 0px)";
+    primary.style.zIndex = "1";
+    primary.style.filter = "opacity(1)";
 
   //
   //image, 1 right
   let r1 = document.getElementById("image" + (((index + images.length) + 1) % images.length));
-  r1.onclick = "";
-  r1.style.transform = `translate3d(${firstTier})`;
-  r1.style.zIndex = "-1";
-  r1.style.filter = "opacity(.5)";
+    r1.onclick = "";
+    r1.style.transform = `translate3d(${firstTier})`;
+    r1.style.zIndex = "-1";
+    r1.style.filter = "opacity(.5)";
 
   //
   //image, 2 right
   let r2 = document.getElementById("image" + (((index + images.length) + 2) % images.length));
-  r2.style.transform = `translate3d(${secondTier})`;
-  r2.style.zIndex = "-2";
-  r2.style.filter = "opacity(.25)";
+    r2.style.transform = `translate3d(${secondTier})`;
+    r2.style.zIndex = "-2";
+    r2.style.filter = "opacity(.25)";
 
   //
   //hidden image, 3 right
   let r3 = document.getElementById("image" + (((index + images.length) + 3) % images.length));
-  r3.style.transform = `translate3d(${thirdTier})`;
-  r3.style.zIndex = "-3";
-  r3.style.filter = "opacity(0)";
+    r3.style.transform = `translate3d(${thirdTier})`;
+    r3.style.zIndex = "-3";
+    r3.style.filter = "opacity(0)";
 
 }
 
 function enlarge(index) {
-  console.log("enlarging");
-  let modal = makeDiv("modal");
+
   let image = makeImg(images[index], "bigger");
+  let imgHeight, imgWidth, ratio;
+  let activeImg = document.getElementById("image" + index);
+  imgHeight = activeImg.offsetHeight;
+  imgWidth = activeImg.offsetWidth;
+  if (imgWidth > imgHeight) {
+    ratio = imgWidth / imgHeight;
+    image.style.maxWidth = `calc(90vh * ${ratio})`;
+  }
+
+  let left = document.getElementById("leftArrow");
+  let right = document.getElementById("rightArrow");
+
+
+  document.body.appendChild(image);
+
+  let div = makeDiv("caption");
+  div.innerHTML = captions[index] + "<br /><span>Click to hide</span>";
+  div.onclick = function() {
+    div.style.top = "-15vh";
+    setTimeout(function() {
+      div.parentNode.removeChild(div);
+    }, 510);
+  }
+  document.body.appendChild(div);
+
+
+  setTimeout(function() {
+    image.style.width = "90vw";
+    image.style.border = "1vw solid rgb(255, 255, 255)";
+    div.style.top = "5vh";
+    left.style.filter = "opacity(0)";
+    right.style.filter = "opacity(0)";
+    setTimeout(function() {
+      left.style.display = "none";
+      right.style.display = "none";
+    }, 500);
+  }, 20);
 
   image.onclick = function() {
     image.style.width = "40vw";
     image.style.border = "1vw solid rgb(255, 255, 255, 0)";
+    div.style.top = "-15vh";
+    left.style.display = "block";
+    right.style.display = "block";
+    setTimeout(function() {
+      left.style.filter = "opacity(1)";
+      right.style.filter = "opacity(1)";
+    }, 20);
+
     setTimeout(function() {
       image.parentNode.removeChild(image);
+      div.parentNode.removeChild(div);
     }, 510);
   }
-  document.body.appendChild(image);
-  setTimeout(function() {
-    image.style.width = "100vw";
-    image.style.border = "1vw solid rgb(255, 255, 255)";
-  }, 20);
 }
