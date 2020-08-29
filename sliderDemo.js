@@ -58,16 +58,33 @@ function makeDiv() {
   return div;
 }
 
+function makeSVG(type) {
+  let svg = document.createElementNS("http://www.w3.org/2000/svg", type);
+  if (arguments.length > 1) {svg.id = arguments[1]};
+  return svg;
+}
+
+function vw(v) {
+  var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+  return (v * w) / 100;
+}
+
 function launchSlider() {
   let slider = document.querySelector(".slider")
 
   let index = 0;
 
-  let leftArrow = makeImg("leftArrow.svg", "leftArrow", "arrows");
+  let leftArrow = makeSVG("svg", "leftArrow");
   leftArrow.onclick = function() {
     index = (((index + images.length) - 1) % images.length);
     displayImages(index);
   };
+  let leftPoly = makeSVG("polygon");
+    let side = vw(10);
+    let length = side - (side * .866);
+    let points = `${side},0 ${side},${side} ${length},${side / 2} ${side},0`
+    leftPoly.setAttribute("points", points);
+  leftArrow.appendChild(leftPoly);
   slider.appendChild(leftArrow);
 
   let imageDiv = makeDiv("imageDiv");
@@ -89,12 +106,29 @@ function launchSlider() {
     slider.style.height = sliderHeight + "px";
   }, 20);
 
-  let rightArrow = makeImg("rightArrow.svg", "rightArrow", "arrows");
+  let rightArrow = makeSVG("svg", "rightArrow");
   rightArrow.onclick = function() {
     index = (((index + images.length) + 1) % images.length);
     displayImages(index);
   };
+  let rightPoly = makeSVG("polygon");
+     side = vw(10);
+     length = side * .866;
+     points = `0,0 0,${side} ${length},${side / 2} 0,0`
+    rightPoly.setAttribute("points", points);
+  rightArrow.appendChild(rightPoly);
   slider.appendChild(rightArrow);
+
+  let arrowShadows = makeSVG("defs");
+    let filter = makeSVG("filter", "shadow");
+      let shadow = makeSVG("feDropShadow");
+      shadow.setAttribute("dx", -(side * .05));
+      shadow.setAttribute("dy", (side * .05));
+      shadow.setAttribute("stdDeviation", "5");
+    filter.appendChild(shadow);
+  arrowShadows.appendChild(filter);
+  leftArrow.appendChild(arrowShadows);
+  rightArrow.appendChild(arrowShadows);
 
   displayImages(index);
 }
@@ -192,8 +226,8 @@ function enlarge(index) {
     image.style.width = "90vw";
     image.style.border = "1vw solid rgb(255, 255, 255)";
     div.style.top = "5vh";
-    left.style.filter = "opacity(0)";
-    right.style.filter = "opacity(0)";
+    left.style.opacity = "0";
+    right.style.opacity = "0";
     setTimeout(function() {
       left.style.display = "none";
       right.style.display = "none";
@@ -207,8 +241,8 @@ function enlarge(index) {
     left.style.display = "block";
     right.style.display = "block";
     setTimeout(function() {
-      left.style.filter = "opacity(1)";
-      right.style.filter = "opacity(1)";
+      left.style.opacity = "1";
+      right.style.opacity = "1";
     }, 20);
     setTimeout(function() {
       image.parentNode.removeChild(image);

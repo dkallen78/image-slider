@@ -5,7 +5,7 @@ body {
   height: 100vh;
   margin: 0;
   overflow: hidden;
-  background-image: radial-gradient(gray, black);
+  background-image: radial-gradient(gray, hsl(230, 100%, 10%));
 }
 
 #bigger {
@@ -39,11 +39,17 @@ body {
   text-align: center;
 }
 
-.arrows {
+#leftArrow, #rightArrow {
   height: 10vw !important;
-  width: 8.66vw !important;
+  width: 10vw !important;
   z-index: 1;
   transition: all 500ms;
+  fill: white;
+  filter: url("#shadow");
+}
+
+#leftArrow:hover, #rightArrow:hover {
+  fill: hsl(50, 100%, 50%);
 }
 
 #leftArrow {
