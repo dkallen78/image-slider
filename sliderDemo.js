@@ -7,7 +7,8 @@ images = ["images/buenosAires.png",
           "images/santiago.png",
           "images/saucillo.png",
           "images/valparaiso.png",
-          "images/washingtonDC.png"];
+          "images/washingtonDC.png",
+          "images/bolivarWashington.png"];
 
 captions = ["Buenos Aires, Argentina",
             "Chichén Itzá, Mexico",
@@ -18,6 +19,7 @@ captions = ["Buenos Aires, Argentina",
             "Santiago, Chile",
             "Los Arcos Saucillo, México",
             "Valparaíso, Chile",
+            "Washington, D.C.",
             "Washington, D.C."];
 
 function makeImg(src) {
@@ -202,10 +204,12 @@ function enlarge(index) {
   let activeImg = document.getElementById("image" + index);
   imgHeight = activeImg.offsetHeight;
   imgWidth = activeImg.offsetWidth;
-  if (imgWidth > imgHeight) {
+  //if (imgWidth > imgHeight) {
     ratio = imgWidth / imgHeight;
     image.style.maxWidth = `calc(90vh * ${ratio})`;
-  }
+  //} else {
+
+  //}
 
   let left = document.getElementById("leftArrow");
   let right = document.getElementById("rightArrow");

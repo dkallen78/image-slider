@@ -43,13 +43,14 @@ body {
   height: 10vw !important;
   width: 10vw !important;
   z-index: 1;
-  transition: all 500ms;
+  transition: fill 500ms, transform 250ms;
   fill: white;
   filter: url("#shadow");
 }
 
 #leftArrow:hover, #rightArrow:hover {
   fill: hsl(50, 100%, 50%);
+  transform: scale(.95, .95);
 }
 
 #leftArrow {
@@ -68,6 +69,9 @@ body {
 }
 
 #imageDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   width: 40vw;
   perspective: 25vw;
@@ -75,7 +79,8 @@ body {
 
 #imageDiv > img {
   position: absolute;
-  width: 40vw;
+  max-height: 90vh;
+  max-width: 40vw;
   filter: opacity(0);
   transition: transform 500ms, filter 500ms, position 500ms;
 }
