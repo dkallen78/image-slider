@@ -1,0 +1,53 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  /*overflow: hidden;*/
+  background-image: radial-gradient(gray, black);
+}
+
+#bigger {
+  position: absolute;
+  z-index: 2;
+  max-height: 90vh;
+  max-width: 90vw;
+  width: 40vw;
+  transition: all 500ms;
+  border: 1vw solid rgb(255, 255, 255, 0);
+}
+
+.arrows {
+  height: 10vw !important;
+  width: 8.66vw !important;
+  z-index: 1;
+}
+
+#leftArrow {
+
+}
+
+#rightArrow {
+
+}
+
+.slider {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100vw;
+}
+
+#imageDiv {
+  position: relative;
+  width: 40vw;
+  perspective: 25vw;
+}
+
+#imageDiv > img {
+  position: absolute;
+  width: 40vw;
+  filter: opacity(0);
+  transition: all 500ms;
+}
