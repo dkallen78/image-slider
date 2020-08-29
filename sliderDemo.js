@@ -260,7 +260,7 @@ function enlarge(index) {
       div.parentNode.removeChild(div);
     }, 510);
   }
-  document.body.appendChild(image);
+  //document.body.appendChild(image);
   //
   //Gets the ratio of width to height of the image
   //  to set the max-width
@@ -270,6 +270,7 @@ function enlarge(index) {
   imgWidth = activeImg.offsetWidth;
   ratio = imgWidth / imgHeight;
   image.style.maxWidth = `calc(90vh * ${ratio})`;
+  document.body.appendChild(image);
 
   let left = document.getElementById("leftArrow");
   let right = document.getElementById("rightArrow");
