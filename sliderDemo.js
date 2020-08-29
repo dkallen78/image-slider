@@ -176,7 +176,6 @@ function enlarge(index) {
   let left = document.getElementById("leftArrow");
   let right = document.getElementById("rightArrow");
 
-
   document.body.appendChild(image);
 
   let div = makeDiv("caption");
@@ -188,7 +187,6 @@ function enlarge(index) {
     }, 510);
   }
   document.body.appendChild(div);
-
 
   setTimeout(function() {
     image.style.width = "90vw";
@@ -212,7 +210,6 @@ function enlarge(index) {
       left.style.filter = "opacity(1)";
       right.style.filter = "opacity(1)";
     }, 20);
-
     setTimeout(function() {
       image.parentNode.removeChild(image);
       div.parentNode.removeChild(div);
