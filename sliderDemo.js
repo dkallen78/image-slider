@@ -61,26 +61,47 @@ function makeDiv() {
 }
 
 function makeSVG(type) {
+  //----------------------------------------------------//
+  //Returns an SVG element of the type indicated..      //
+  //string-> type: type of SVG element to be created    //
+  //string-> arguments[1]: assigned as the id of the    //
+  //  new SVG element                                   //
+  //----------------------------------------------------//
+
   let svg = document.createElementNS("http://www.w3.org/2000/svg", type);
   if (arguments.length > 1) {svg.id = arguments[1]};
   return svg;
 }
 
 function vw(v) {
+  //----------------------------------------------------//
+  //I found this online. It finds the pixel value of a  //
+  //  CSS vw value.                                     //
+  //integer-> v: the vw value to find                   //
+  //----------------------------------------------------//
+
   var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
   return (v * w) / 100;
 }
 
 function launchSlider() {
+  //----------------------------------------------------//
+  //Puts all the HTML and SVG elements into the document//
+  //----------------------------------------------------//
+
   let slider = document.querySelector(".slider")
 
   let index = 0;
 
+  //
+  //Makes the SVG container for the left arrow
   let leftArrow = makeSVG("svg", "leftArrow");
   leftArrow.onclick = function() {
     index = (((index + images.length) - 1) % images.length);
     displayImages(index);
   };
+  //
+  //Defines the polygon of the left arrow
   let leftPoly = makeSVG("polygon");
     let side = vw(10);
     let length = side - (side * .866);
@@ -89,6 +110,9 @@ function launchSlider() {
   leftArrow.appendChild(leftPoly);
   slider.appendChild(leftArrow);
 
+  //
+  //Makes the <div> to hold the images and
+  //populates it with images from the array
   let imageDiv = makeDiv("imageDiv");
   for (let i = 0; i < images.length; i++) {
     let img = makeImg(images[i], "image" + i, "sliderImages");
@@ -96,23 +120,15 @@ function launchSlider() {
   }
   slider.appendChild(imageDiv);
 
-  let sliderHeight = 0;
-  setTimeout(function() {
-    for (let i = 0; i < images.length; i++) {
-      let img = document.getElementById("image" + i);
-      if (img.offsetHeight > sliderHeight) {
-        sliderHeight = img.offsetHeight;
-      }
-    }
-    imageDiv.style.height = sliderHeight + "px";
-    slider.style.height = sliderHeight + "px";
-  }, 20);
-
+  //
+  //Makes the SVG container for the right arrow
   let rightArrow = makeSVG("svg", "rightArrow");
   rightArrow.onclick = function() {
     index = (((index + images.length) + 1) % images.length);
     displayImages(index);
   };
+  //
+  //Defines the polygon of the right arrow
   let rightPoly = makeSVG("polygon");
      side = vw(10);
      length = side * .866;
@@ -121,6 +137,8 @@ function launchSlider() {
   rightArrow.appendChild(rightPoly);
   slider.appendChild(rightArrow);
 
+  //
+  //Defines the drop shadow for the arrows
   let arrowShadows = makeSVG("defs");
     let filter = makeSVG("filter", "shadow");
       let shadow = makeSVG("feDropShadow");
@@ -136,6 +154,11 @@ function launchSlider() {
 }
 
 function displayImages(index) {
+  //----------------------------------------------------//
+  //Displays the images on the webpage.                 //
+  //integer-> index: the index of the image to be       //
+  //  to be displayed                                   //
+  //----------------------------------------------------//
 
   let thirdTier = "175%, -225%, -350px";
   let secondTier = "200%, -150%, -280px";
@@ -143,6 +166,8 @@ function displayImages(index) {
 
   //
   //Hidden image, 3 left
+  //This image is positioned but not shown to
+  //  make the transitions appear smoother
   let l3 = document.getElementById("image" + (((index + images.length) - 3) % images.length));
     l3.style.transform = `translate3d(-${thirdTier})`;
     l3.style.zIndex = "-3";
@@ -190,67 +215,106 @@ function displayImages(index) {
 
   //
   //hidden image, 3 right
+  //This image is positioned but not shown to
+  //  make the transitions appear smoother
   let r3 = document.getElementById("image" + (((index + images.length) + 3) % images.length));
     r3.style.transform = `translate3d(${thirdTier})`;
     r3.style.zIndex = "-3";
     r3.style.filter = "opacity(0)";
-
 }
 
 function enlarge(index) {
+  //----------------------------------------------------//
+  //Enlarges an image when it is clicked                //
+  //integer-> index: index of the image to be enlargd   //
+  //----------------------------------------------------//
 
   let image = makeImg(images[index], "bigger");
-  let imgHeight, imgWidth, ratio;
-  let activeImg = document.getElementById("image" + index);
-  imgHeight = activeImg.offsetHeight;
-  imgWidth = activeImg.offsetWidth;
-  //if (imgWidth > imgHeight) {
-    ratio = imgWidth / imgHeight;
-    image.style.maxWidth = `calc(90vh * ${ratio})`;
-  //} else {
-
-  //}
-
-  let left = document.getElementById("leftArrow");
-  let right = document.getElementById("rightArrow");
-
-  document.body.appendChild(image);
-
-  let div = makeDiv("caption");
-  div.innerHTML = captions[index] + "<br /><span>Click to hide</span>";
-  div.onclick = function() {
-    div.style.top = "-15vh";
-    setTimeout(function() {
-      div.parentNode.removeChild(div);
-    }, 510);
-  }
-  document.body.appendChild(div);
-
-  setTimeout(function() {
-    image.style.width = "90vw";
-    image.style.border = "1vw solid rgb(255, 255, 255)";
-    div.style.top = "5vh";
-    left.style.opacity = "0";
-    right.style.opacity = "0";
-    setTimeout(function() {
-      left.style.display = "none";
-      right.style.display = "none";
-    }, 500);
-  }, 20);
-
   image.onclick = function() {
+    //--------------------------------------------------//
+    //Restores the image to its normal size when        //
+    //  it's clicked                                    //
+    //--------------------------------------------------//
+
     image.style.width = "40vw";
     image.style.border = "1vw solid rgb(255, 255, 255, 0)";
     div.style.top = "-15vh";
     left.style.display = "block";
     right.style.display = "block";
     setTimeout(function() {
+      //------------------------------------------------//
+      //Restores opacity to the previously hidden       //
+      //  left and right arrows                         //
+      //------------------------------------------------//
+
       left.style.opacity = "1";
       right.style.opacity = "1";
     }, 20);
     setTimeout(function() {
+      //------------------------------------------------//
+      //Once all the animations have run their course,  //
+      //  the elements are removed from the DOM         //
+      //------------------------------------------------//
+
       image.parentNode.removeChild(image);
       div.parentNode.removeChild(div);
     }, 510);
   }
+  document.body.appendChild(image);
+  //
+  //Gets the ratio of width to height of the image
+  //  to set the max-width
+  let imgHeight, imgWidth, ratio;
+  let activeImg = document.getElementById("image" + index);
+  imgHeight = activeImg.offsetHeight;
+  imgWidth = activeImg.offsetWidth;
+  ratio = imgWidth / imgHeight;
+  image.style.maxWidth = `calc(90vh * ${ratio})`;
+
+  let left = document.getElementById("leftArrow");
+  let right = document.getElementById("rightArrow");
+  //
+  //Creates the <div> that displays the caption
+  let div = makeDiv("caption");
+  div.innerHTML = captions[index] + "<br /><span>Click to hide</span>";
+  div.onclick = function() {
+    //--------------------------------------------------//
+    //Hides and removes the caption <div> when          //
+    //  it's clicked                                    //
+    //--------------------------------------------------//
+
+    div.style.top = "-15vh";
+    setTimeout(function() {
+      //------------------------------------------------//
+      //Removes the caption <div> from the DOM after    //
+      //  the transition animations have run            //
+      //------------------------------------------------//
+
+      div.parentNode.removeChild(div);
+    }, 510);
+  }
+  document.body.appendChild(div);
+
+  setTimeout(function() {
+    //--------------------------------------------------//
+    //Changes the initial values of the image, caption, //
+    //  and buttons to their display values to create   //
+    //  a clean transition animation                    //
+    //--------------------------------------------------//
+
+    image.style.width = "90vw";
+    image.style.border = "1vw solid rgb(255, 255, 255)";
+    div.style.top = "5vh";
+    left.style.opacity = "0";
+    right.style.opacity = "0";
+    setTimeout(function() {
+      //------------------------------------------------//
+      //Hides the left and right buttons so they can't  //
+      //  be clicked when the enlarged image is shown   //
+      //------------------------------------------------//
+
+      left.style.display = "none";
+      right.style.display = "none";
+    }, 500);
+  }, 20);
 }

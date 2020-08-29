@@ -43,7 +43,7 @@ body {
   height: 10vw !important;
   width: 10vw !important;
   z-index: 1;
-  transition: fill 500ms, transform 250ms;
+  transition: fill 500ms, opacity 500ms, transform 250ms;
   fill: white;
   filter: url("#shadow");
 }
